@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+
+{% block title %}病患基本資料{% endblock %}
+
+{% block content %}          
+           
+           <!-- Page content-->
+            <div class="container-fluid">
+                <form action="{{ url_for('pat_sc1.sequel_page') }}" method="POST">
+                    <h3>病患基本資料</h3>
+                        <div class="input-group mb-3">
+                  <span class="input-group-text" id="inputGroup-sizing-default">姓名</span>
+                  <input type="text" class="form-control" name="name" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"> 
+                            
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="inputGroup-sizing-default">身分證字號</span>
+                            <input type="text" class="form-control" name="identifier" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"> 
+                                      
+                        </div>
+                
+                        <div class="input-group mb-3">
+                  <span class="input-group-text" id="inputGroup-sizing-default">病歷號碼</span>
+                                <input type="text" class="form-control" name ="identifier2"aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                            
+                        </div>
+                 <div class="input-group mb-3">
+                    <label class="input-group-text" for="gender-select">性別</label>
+                    <select class="form-select" id="gender-select" name="gender">
+                        <option value="male">男</option>
+                        <option value="female">女</option>
+                        <option value="other">其他</option>
+                        <option value="unknown">未知</option>
+                    </select>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="inputGroup-sizing-default">生日</span>
+                                <input type="date" class="form-control" name ="birthdate">
+                            </div> 
+                            
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="inputGroup-sizing-default">連絡電話</span>
+                                        <input type="text" class="form-control" name ="contact">
+                    </div>
+                    
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="inputGroup-sizing-default">郵遞區號</span>
+                                <input type="text" class="form-control" name ="postalCode">
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="inputGroup-sizing-default">國家</span>
+                                <input type="text" class="form-control" name ="country">
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="inputGroup-sizing-default">縣市</span>
+                                <input type="text" class="form-control" name ="city">
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="inputGroup-sizing-default">鄉鎮市區</span>
+                                <input type="text" class="form-control" name ="District">
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="inputGroup-sizing-default">道路名稱</span>
+                                <input type="text" class="form-control" name ="line">
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="inputGroup-sizing-default">緊急聯絡人姓名</span>
+                                <input type="text" class="form-control" name ="contactname">
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="inputGroup-sizing-default">緊急聯絡人電話</span>
+                                <input type="text" class="form-control" name ="contacttelecom">
+                    </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-default">機構</span>
+                        <input type="tel" class="form-control" name ="managingOrganization">
+                    </div>
+
+                </div>     
+            </div>
+        </div>
+                
+                        
+                 <div class="position-absolute top-100 start-50">
+                <button type="submit" class="btn btn-primary">儲存</button>
+                </form> 
+            </div>  
+        </div>
+    </div>
+</div>
+   
+
+{% endblock %}

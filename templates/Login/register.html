@@ -1,0 +1,54 @@
+
+{% extends "base.html" %}
+
+
+{% block title %}Register{% endblock %}
+
+{% block content %}       
+
+<h1 class="mt-5">Register</h1>
+<form class="mt-3" action="/register" method="post">
+    <div class="mb-3">
+        <label for="username" class="form-label">Username:</label>
+        <input type="text" class="form-control" name="username" required>
+    </div>
+    <div class="mb-3">
+        <label for="password" class="form-label">Password:</label>
+        <input type="password" class="form-control" name="password" required>
+    </div>
+    <div class="mb-3">
+        <label for="confirm_password" class="form-label">Confirm Password:</label>
+        <input type="password" class="form-control" name="confirm_password" required>
+    </div>
+    <div class="mb-3">
+        <label for="role" class="form-label">Role:</label>
+        <select class="form-select" name="role" required>
+            <option value="0">Patient</option>
+            <option value="1">Healthcare Professional</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Register</button>
+</form>
+        <script>
+            document.getElementById('registerButton').addEventListener('click', function() {
+                fetch('/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: 'username',
+                        password: 'password',
+                        confirm_password: 'password',
+                        role: 'role'
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);  // 在控制台中打印伺服器的響應
+                    // 在這裡處理伺服器的響應，例如更新用戶介面或導向到其他頁面
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        </script>
+{% endblock %}   

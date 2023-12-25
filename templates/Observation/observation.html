@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+
+{% block title %}檢驗資料{% endblock %}
+
+{% block content %}  
+
+
+            <!-- Page content-->
+            <div class="container-fluid">
+                <form action="{{ url_for('obs.sequelobs_page') }}" method="POST">
+                    <h3>12導程心電圖</h3>
+                        <div class="input-group mb-3">
+                  <span class="input-group-text" id="inputGroup-sizing-default">受測者id</span>
+                  <input type="text" class="form-control" name="id1" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"> 
+                            
+                        </div>
+
+                        <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-default">檢查單id</span>
+                    <input type="text" class="form-control" name="id2" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"> 
+                                      
+                        </div>    
+                
+                       <div class="input-group mb-3">
+                  <span class="input-group-text" id="inputGroup-sizing-default">量測時間</span>
+                                <input type="text" class="form-control" name="time"aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                        </div>
+                
+                        <div class="input-group mb-3">
+                  <span class="input-group-text" id="inputGroup-sizing-default">導程l</span>
+                                <input type="text" class="form-control" name ="data1"aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                            
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="inputGroup-sizing-default">導程ll</span>
+                                          <input type="text" class="form-control" name ="data2"aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                                      
+                        </div>
+                        
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="inputGroup-sizing-default">導程lll</span>
+                                            <input type="text" class="form-control" name ="data3"aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                                              
+                         </div>
+                         <div class="input-group mb-3">
+                            <span class="input-group-text" id="inputGroup-sizing-default">AVR</span>
+                                          <input type="text" class="form-control" name ="data4"aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                                      
+                         </div>
+                         <div class="input-group mb-3">
+                            <span class="input-group-text" id="inputGroup-sizing-default">AVL</span>
+                                          <input type="text" class="form-control" name ="data5"aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                                      
+                         </div>
+                         <div class="input-group mb-3">
+                            <span class="input-group-text" id="inputGroup-sizing-default">AVF</span>
+                                          <input type="text" class="form-control" name ="data6"aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                                      
+                         </div>
+                         <div class="input-group mb-3">
+                            <span class="input-group-text" id="inputGroup-sizing-default">V1</span>
+                                          <input type="text" class="form-control" name ="data7"aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                                      
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="inputGroup-sizing-default">V2</span>
+                                          <input type="text" class="form-control" name ="data8"aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                                      
+                        </div>
+                         <div class="input-group mb-3">
+                            <span class="input-group-text" id="inputGroup-sizing-default">V3</span>
+                                            <input type="text" class="form-control" name ="data9"aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                                              
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="inputGroup-sizing-default">V4</span>
+                                              <input type="text" class="form-control" name ="data10"aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                                          
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="inputGroup-sizing-default">V5</span>
+                                              <input type="text" class="form-control" name ="data11"aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                                          
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="inputGroup-sizing-default">V6</span>
+                                              <input type="text" class="form-control" name ="data12"aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                                          
+                            </div>          
+
+                </div>
+                 </div>
+                
+                        
+                 <div class="position-absolute translate-middle-y start-50" style="top: 950px;">
+                  <button type="submit" class="btn btn-primary">送出</button>
+                </form> 
+            </div>  
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

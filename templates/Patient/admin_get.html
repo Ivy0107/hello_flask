@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}病患基本資料{% endblock %}
+
+{% block content %}  
+<style>
+    .check-mark-image {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .check-mark-image img {
+        width: 200px; /* 調整寬度 */
+        height: 200px; /* 調整高度 */
+    }
+</style>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <form method="GET" action="/patients">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="input-group">
+                            <span class="input-group-text">ID</span>
+                            <input type="text" class="form-control" name="search_id" placeholder="搜尋病患ID">
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-info">搜尋</button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>姓名</th>
+                            <th>性別</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if patients %}
+                            {% for patient in patients %}
+                                <tr>
+                                    <td>{{ patient["resource_id"] }}</td>
+                                    <td>{{ patient["name"] }}</td>
+                                    <td>{{ patient["gender"] }}</td>
+                                    <td>
+                                        <a href="{{ url_for('admin_get.detail2', resource_id=patient['resource_id']) }}" class="btn btn-info" target="_blank">查看</a>
+                                        <a href="#" class="btn btn-danger delete-btn" data-id="{{ patient['resource_id'] }}">刪除</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="4">No data found.</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="modal" tabindex="-1" role="dialog" id="successModal">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">刪除成功</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p id="successMessage"></p>
+                            <!-- 綠色打勾的圖片 -->
+                            <div class="check-mark-image">
+                                <img src={{ url_for('static', filename='dist/img/123.PNG') }} alt="綠色打勾">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // 監聽刪除按鈕的點擊事件
+        document.querySelectorAll('.delete-btn').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var patientId = this.getAttribute('data-id');
+
+                // 向伺服器發送 DELETE 請求
+                fetch(`/patients/delete/${patientId}`, { method: 'DELETE' })
+                    .then(response => response.json())
+                    .then(data => {
+                        // 顯示成功的 modal
+                        if (data.success) {
+                            document.getElementById('successMessage').textContent = data.message;
+                            var successModal = new bootstrap.Modal(document.getElementById('successModal'));
+                            successModal.show();
+                        } else {
+                            alert('刪除失敗: ' + data.message);
+                        }
+                    })
+                    .catch(error => alert('刪除失敗: ' + error.message));
+            });
+        });
+    });
+</script>
+{% endblock %}

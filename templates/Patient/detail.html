@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}病患詳細資料{% endblock %}
+
+{% block content %}    
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <form method="POST">
+                <!-- 顯示患者詳細資料 -->
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <span class="input-group-text" id="inputGroup-sizing-default">姓名</span>
+                            <input type="text" id="name" name="name" value="{{ patient_detail[0] }}" aria-label="Sizing example input"  readonly>
+                            
+                            <span class="input-group-text" id="inputGroup-sizing-default">性別</span>
+                            <input type="text" id="gender" name="gender" value="{{ patient_detail[2] }}" readonly>
+                
+                            <span class="input-group-text" id="inputGroup-sizing-default">身分證字號</span>
+                            <input type="text" id="id_number" name="identifier" value="{{ patient_detail[1] }}" readonly>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <span class="input-group-text" id="inputGroup-sizing-default">病歷號碼</span>
+                            <input type="text" id="identifier2" name="identifier2" value="{{ patient_detail[4] }}" readonly>
+                            
+                            <span class="input-group-text" id="inputGroup-sizing-default">生日</span>
+                            <input type="text" id="birthdate" name="birthdate" value="{{ patient_detail[3] }}" readonly>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-default">機構</span>
+                <input type="text" id="managingOrganization" name="managingOrganization" value="{{ patient_detail[5] }}" readonly>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-default">連絡電話</span>
+                <input type="text" id="contact" name="contact" value="{{ patient_detail[6] }}" readonly>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <span class="input-group-text" id="inputGroup-sizing-default">郵遞區號</span>
+                            <input type="text" id="postalCode" name="postalCode" value="{{ patient_detail[7] }}" readonly>
+                            
+                            <span class="input-group-text" id="inputGroup-sizing-default">國家</span>
+                            <input type="text" id="country" name="country" value="{{ patient_detail[8] }}" readonly>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <span class="input-group-text" id="inputGroup-sizing-default">縣市</span>
+                            <input type="text" id="city" name="city" value="{{ patient_detail[9] }}" readonly>
+                            
+                            <span class="input-group-text" id="inputGroup-sizing-default">鄉鎮市區</span>
+                            <input type="text" id="District" name="District" value="{{ patient_detail[10] }}" readonly>
+                            
+                            <span class="input-group-text" id="inputGroup-sizing-default">道路名稱</span>
+                            <input type="text" id="line" name="line" value="{{ patient_detail[11] }}" readonly>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <span class="input-group-text" id="inputGroup-sizing-default">緊急聯絡人姓名</span>
+                            <input type="text" id="contactname" name="contactname" value="{{ patient_detail[12] }}" readonly>
+                            
+                            <span class="input-group-text" id="inputGroup-sizing-default">緊急聯絡人電話</span>
+                            <input type="text" id="contacttelecom" name="contacttelecom" value="{{ patient_detail[13] }}" readonly>
+                        </div>
+                    </div>
+                </div>
+                
+                <!--按鈕 -->
+                <button type="submit" class="btn btn-info">返回</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

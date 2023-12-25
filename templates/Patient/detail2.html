@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block title %}病患詳細資料{% endblock %}
+
+{% block content %}    
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <form method="POST">
+                <!-- 顯示患者詳細資料 -->
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <div class="input-group">
+
+                            <span class="input-group-text" id="inputGroup-sizing-default">id</span>
+                            <input type="text" id="resource_id" name="resource_id" value="{{ patient_detail['resource_id'] }}" readonly>
+
+                            <span class="input-group-text" id="inputGroup-sizing-default">姓名</span>
+                            <input type="text" id="name" name="name" value="{{ patient_detail['name'] }}" readonly>
+                            
+                            <span class="input-group-text" id="inputGroup-sizing-default">性別</span>
+                            <input type="text" id="gender" name="gender" value="{{ patient_detail['gender'] }}" readonly>
+                
+                           
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <span class="input-group-text" id="inputGroup-sizing-default">病歷號碼</span>
+                            <input type="text" id="identifier2" name="identifier2" value="{{ patient_detail['identifier2'] }}" readonly>
+
+                            
+                            <span class="input-group-text" id="inputGroup-sizing-default">生日</span>
+                            <input type="text" id="birthDate" name="birthDate" value="{{ patient_detail['birthDate'] }}" readonly>
+                        </div>
+                    </div>
+                </div>
+                
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-default">連絡電話</span>
+                    <input type="text" id="telecom" name="telecom" value="{{ patient_detail['telecom'] }}" readonly>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <span class="input-group-text" id="inputGroup-sizing-default">郵遞區號</span>
+                            <input type="text" id="postalCode" name="postalCode" value="{{ patient_detail['address']['postalCode'] }}" readonly>
+                            
+                            <span class="input-group-text" id="inputGroup-sizing-default">國家</span>
+                            <input type="text" id="country" name="country" value="{{ patient_detail['address']['country'] }}" readonly>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <span class="input-group-text" id="inputGroup-sizing-default">縣市</span>
+                            <input type="text" id="city" name="city" value="{{ patient_detail['address']['city'] }}" readonly>
+                            
+                            <span class="input-group-text" id="inputGroup-sizing-default">鄉鎮市區</span>
+                            <input type="text" id="district" name="district" value="{{ patient_detail['address']['district'] }}" readonly>
+                            
+                            <span class="input-group-text" id="inputGroup-sizing-default">道路名稱</span>
+                            <input type="text" id="line" name="line" value="{{ patient_detail['address']['line'] }}" readonly>
+                        </div>
+                    </div>
+                </div>
+
+                
+                
+                
+                <!--按鈕 -->
+                <button type="submit" class="btn btn-info">返回</button>
+                <button type="button" class="btn btn-info" onclick="enableEdit()">修改</button>
+                <button type="button" class="btn btn-info" onclick="saveData()">儲存</button>
+            </form>
+            <!-- Modal -->
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="successModalLabel">Success</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="successModalBody"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function enableEdit() {
+        // 移除 readonly 屬性
+        document.querySelectorAll('[readonly]').forEach(function (element) {
+            element.removeAttribute('readonly');
+        });
+    }
+    function saveData() {
+        
+        var formData = new FormData(document.querySelector('form'));
+    
+       
+        fetch('/putsequel', {
+            method: 'PUT',  
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+             // 顯示 modal 框
+        if (data.success) {
+            showSuccessModal("Data updated successfully");
+        } else {
+            showAlert("danger", "Failed to save data: " + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showAlert("danger", "An error occurred");
+    });
+}
+
+function showSuccessModal(message) {
+    var successModalBody = document.getElementById("successModalBody");
+    successModalBody.innerText = message;
+
+    // 觸發 modal 顯示
+    $('#successModal').modal('show');
+           
+    }
+
+</script>
+{% endblock %}

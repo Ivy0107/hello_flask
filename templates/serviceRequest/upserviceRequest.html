@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+
+{% block title %}病患基本資料{% endblock %}
+
+{% block content %}          
+           
+           <!-- Page content-->
+            <div class="container-fluid">
+                <form action="{{ url_for('ser.sequelser_page') }}" method="POST">
+                    <h3>心電圖檢查單</h3>
+                        <div class="input-group mb-3">
+                  <span class="input-group-text" id="inputGroup-sizing-default">開單時間</span>
+                  <input type="text" class="form-control" name="authoredon" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"> 
+                            
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="inputGroup-sizing-default">病患ID</span>
+                            <input type="text" class="form-control" name="patientid" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg"> 
+                                      
+                        </div>
+                
+                        <div class="input-group mb-3">
+                  <span class="input-group-text" id="inputGroup-sizing-default">開單醫師ID</span>
+                                <input type="text" class="form-control" name ="requester"aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                            
+                        </div>
+                        <div class="position-absolute top-50 start-50">
+                            <button type="submit" class="btn btn-primary">送出</button>
+                            </form> 
+                        </div>  
+                </div>     
+            </div>
+        </div>
+                
+                        
+                 
+             
+   
+
+{% endblock %}
