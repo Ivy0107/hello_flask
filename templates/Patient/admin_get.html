@@ -2,7 +2,7 @@
 
 {% block title %}病患基本資料{% endblock %}
 
-{% block content %}  
+{% block content %}
 <style>
     .check-mark-image {
         display: flex;
@@ -15,6 +15,7 @@
         height: 200px; /* 調整高度 */
     }
 </style>
+
 <div class="container mt-4">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -36,6 +37,7 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
+                            <th>版本 ID</th> <!-- 新增版本 ID 標題 -->
                             <th>ID</th>
                             <th>姓名</th>
                             <th>性別</th>
@@ -46,6 +48,7 @@
                         {% if patients %}
                             {% for patient in patients %}
                                 <tr>
+                                    <td>{{ patient["version_id"] }}</td> <!-- 顯示版本 ID -->
                                     <td>{{ patient["resource_id"] }}</td>
                                     <td>{{ patient["name"] }}</td>
                                     <td>{{ patient["gender"] }}</td>
@@ -57,13 +60,13 @@
                             {% endfor %}
                         {% else %}
                             <tr>
-                                <td colspan="4">No data found.</td>
+                                <td colspan="5">No data found.</td>
                             </tr>
                         {% endif %}
                     </tbody>
                 </table>
             </div>
-            
+
             <div class="modal" tabindex="-1" role="dialog" id="successModal">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">

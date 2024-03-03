@@ -1,0 +1,64 @@
+自訂id
+prefix = "Eden-pat"
+資料庫設定
+db_settings = {
+    "host": "127.0.0.1",
+    "port": 3306,
+    "user": "root",
+    "password": "123456",
+    "db": "test",
+    "charset": "utf8"
+}
+
+
+def initialize_counter():
+    # 連接到資料庫
+    conn = pymysql.connect(**db_settings)    
+    cursor = conn.cursor()
+
+    # 檢查是否已經有計數器，如果沒有，則創建一個
+    cursor.execute("SHOW TABLES LIKE 'counter'")
+    result = cursor.fetchone()
+
+    if not result:
+        cursor.execute("CREATE TABLE counter (id INT PRIMARY KEY AUTO_INCREMENT, value INT)")
+        conn.commit()
+    else:
+        # Reset the auto-increment value
+        cursor.execute("ALTER TABLE counter AUTO_INCREMENT = 1")
+        conn.commit()    
+
+    cursor.close()
+    conn.close()
+
+initialize_counter()
+
+
+        # 連接到資料庫
+        conn = pymysql.connect(**db_settings)
+        cursor = conn.cursor()
+
+        # 新增資料 SQL 語法，不包含 value 欄位
+        command = "INSERT INTO counter () VALUES ();"
+        cursor.execute(command)
+        conn.commit()
+
+        # 取得新的 auto_increment ID
+        cursor.execute("SELECT LAST_INSERT_ID()")
+        auto_increment_id = cursor.fetchone()[0]
+
+        # 使用 auto_increment ID 生成病歷號碼
+        generated_id = f"{prefix}-{auto_increment_id}"
+
+        # 新增患者資料 SQL 語法
+        command = "INSERT INTO patient(ID, 姓名, 身分證字號, 性別, 病歷號碼, 生日, 機構, 連絡電話, 郵遞區號, 國家, 縣市, 鄉鎮市區, 道路名稱, 緊急聯絡人姓名, 緊急聯絡人電話) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        cursor.execute(command, (generated_id, name, identifier, gender, identifier2, birthdate, managingOrganization, contact, postalCode, country, city, District, line, contactname, contacttelecom))
+        conn.commit()
+
+        cursor.close()
+        conn.close()
+
+    except Exception as db_error:
+        return {"database_error": str(db_error)}
+
+    

@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 import logging, pymysql
-from APP.Patient import uppatient, getpatient,admin_get
+from APP.Patient import uppatient,admin_get
 from APP.Observation import upObservation, getObservation
 from APP.Organization import uporganization
 from APP.ServiceRequest import upserviceRequest
@@ -21,7 +21,6 @@ app = Flask(__name__)
 
 
 app.register_blueprint(uppatient.bp)
-app.register_blueprint(getpatient.bp)
 app.register_blueprint(admin_get.bp)
 app.register_blueprint(upObservation.bp)
 app.register_blueprint(getObservation.bp)

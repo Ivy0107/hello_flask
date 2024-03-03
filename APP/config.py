@@ -19,25 +19,17 @@ def create_fhir_resource(resource_type, data):
    response=requests.post(FHIR_URL + f"/{resource_type}", headers=headers, json=data)
    return response
 
-def create_fhir_resource2(resource_type,generated_id ,data):
-   response=requests.put(FHIR_URL + f"/{resource_type}/{generated_id}", headers=headers, json=data)
-   return response
-
-#search2
-def search_fhir_resource2():
-   response=requests.get(FHIR_URL + f"/Patient/22", headers=headers)
-   return response
-
-
-#search
-def search_fhir_data(resource_type, search_param, search_text):
-    response = requests.get(f"{FHIR_URL}/{resource_type}/1d2ddfea-a1b1-4a83-b6c1-7266ef7e87bd/_history", headers=headers)
-    return response
-
-
 #observation search
 def search_fhir_data2(resource_type, search_param1,search_param2,search_param3,search_param4, search_text1,search_text2,search_text3,search_text4):
     response = requests.get(f"{FHIR_URL}/{resource_type}?{search_param1}={search_text1}&{search_param2}={search_text2}&{search_param3}={search_text3}&{search_param4}={search_text4}&_id=1b55df5e-a824-42e4-a59a-908d493c1778", headers=headers)
     return response
+
+
+#search
+#def search_fhir_data(resource_type):
+#    response = requests.get(f"{FHIR_URL}/{resource_type}/1d2ddfea-a1b1-4a83-b6c1-7266ef7e87bd/_history", headers=headers)
+#    return response
+
+
 
 

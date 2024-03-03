@@ -1,48 +1,14 @@
 from flask import Flask, request, render_template, Blueprint
-from APP.config import create_fhir_resource2
-import pymysql
+from APP.config import create_fhir_resource
 import requests
 
 app = Flask(__name__)
-
-
-prefix = "Eden-pat"
 
 bp = Blueprint('pat_sc1', __name__)
 
 @bp.route('/patient', methods=['GET', 'POST'])
 def patient_page():
     return render_template('Patient/patient.html')
-
-def initialize_counter():
-    # 連接到資料庫
-    db_settings = {
-        "host": "127.0.0.1",
-        "port": 3306,
-        "user": "root",
-        "password": "123456",
-        "db": "test",
-        "charset": "utf8"
-    }
-    conn = pymysql.connect(**db_settings)
-    cursor = conn.cursor()
-
-    # 檢查是否已經有計數器，如果沒有，則創建一個
-    cursor.execute("SHOW TABLES LIKE 'counter'")
-    result = cursor.fetchone()
-
-    if not result:
-        cursor.execute("CREATE TABLE counter (id INT PRIMARY KEY AUTO_INCREMENT, value INT)")
-        conn.commit()
-    else:
-        # Reset the auto-increment value
-        cursor.execute("ALTER TABLE counter AUTO_INCREMENT = 1")
-        conn.commit()    
-
-    cursor.close()
-    conn.close()
-
-initialize_counter()
 
 @bp.route('/sequel', methods=['POST'])
 def sequel_page():
@@ -62,113 +28,77 @@ def sequel_page():
         birthdate = request.form.get('birthdate')
         managingOrganization = request.form.get('managingOrganization')
 
-        # 連接到資料庫
-        db_settings = {
-          "host": "127.0.0.1",
-          "port": 3306,
-          "user": "root",
-          "password": "123456",
-          "db": "test",
-          "charset": "utf8"
-        }
-        conn = pymysql.connect(**db_settings)
-        cursor = conn.cursor()
 
-        # 新增資料 SQL 語法，不包含 value 欄位
-        command = "INSERT INTO counter () VALUES ();"
-        cursor.execute(command)
-        conn.commit()
-
-        # 取得新的 auto_increment ID
-        cursor.execute("SELECT LAST_INSERT_ID()")
-        auto_increment_id = cursor.fetchone()[0]
-
-        # 使用 auto_increment ID 生成病歷號碼
-        generated_id = f"{prefix}-{auto_increment_id}"
-
-        # 新增患者資料 SQL 語法
-        command = "INSERT INTO patient(ID, 姓名, 身分證字號, 性別, 病歷號碼, 生日, 機構, 連絡電話, 郵遞區號, 國家, 縣市, 鄉鎮市區, 道路名稱, 緊急聯絡人姓名, 緊急聯絡人電話) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-        cursor.execute(command, (generated_id, name, identifier, gender, identifier2, birthdate, managingOrganization, contact, postalCode, country, city, District, line, contactname, contacttelecom))
-        conn.commit()
-
-        cursor.close()
-        conn.close()
-
-    except Exception as db_error:
-        return {"database_error": str(db_error)}
-
-    try:
         # 上傳 FHIR 伺服器
         data = {
-  "resourceType": "Patient",
-  "id": generated_id,
-  "identifier": [
-    {
-      "use": "official",
-      "type": {
-        "coding": [
-          {
-            "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
-            "code": "MR"
-          }
-        ]
-      },
-      "system": "http://www.tph.mohw.gov.tw/",
-      "value": identifier2
-    },
-    {
-      "system": "http://www.tph.mohw.gov.tw/",
-      "value": identifier
-    }
-  ],
-  "name": [
-    {
-      "use": "official",
-      "text": name
-    }
-  ],
-  "gender": gender,
-  "birthDate": birthdate,
-  "telecom": [
-    {
-      "system": "phone",
-      "value": contact
-    }
-  ],
-  "address": [
-    {
-      "city": city,
-      "district": District,
-      "line": [line],
-      "postalCode": postalCode,
-      "country": country
-    }
-  ],
-  "contact": [
-    {
-      "name": {
-        "text": contactname,
-        "use": "official"
-      }
-    },
-    {
-      "telecom": [
-        {
-          "system": "phone",
-          "value": contacttelecom
+            "resourceType": "Patient",
+            "identifier": [
+                {
+                    "use": "official",
+                    "type": {
+                        "coding": [
+                            {
+                                "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                                "code": "MR"
+                            }
+                        ]
+                    },
+                    "system": "http://www.tph.mohw.gov.tw/",
+                    "value": identifier2
+                },
+                {
+                    "system": "http://www.tph.mohw.gov.tw/",
+                    "value": identifier
+                }
+            ],
+            "name": [
+                {
+                    "use": "official",
+                    "text": name
+                }
+            ],
+            "gender": gender,
+            "birthDate": birthdate,
+            "telecom": [
+                {
+                    "system": "phone",
+                    "value": contact
+                }
+            ],
+            "address": [
+                {
+                    "city": city,
+                    "district": District,
+                    "line": [line],
+                    "postalCode": postalCode,
+                    "country": country
+                }
+            ],
+            "contact": [
+                {
+                    "name": {
+                        "text": contactname,
+                        "use": "official"
+                    }
+                },
+                {
+                    "telecom": [
+                        {
+                            "system": "phone",
+                            "value": contacttelecom
+                        }
+                    ]
+                }
+            ]
         }
-      ]
-    }
-  ]
-}
 
-        response= create_fhir_resource2("Patient",generated_id, data)
-        response.raise_for_status()
+        response = create_fhir_resource("Patient", data)
+        server_response_text = response.text
 
-    except requests.exceptions.RequestException as fhir_error:
-        return {"fhir_error": str(fhir_error)}
+        return render_template('Results/sequel.html',  server_response_text=server_response_text)
 
-    return "Data inserted and uploaded successfully!"
+    except Exception as e:
+     return {"error": str(e)}    
 
 if __name__ == '__main__':
     app.run(debug=True, threaded=True)

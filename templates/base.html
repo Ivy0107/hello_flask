@@ -26,10 +26,9 @@
             <div class="list-group list-group-flush">
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ url_for('cover_page') }}" method="GET">query</a>
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ url_for('pat_sc1.patient_page') }}">Patient</a>
-                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ url_for('pat_get.search_page') }}"  method="GET">病患資料</a>
-                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ url_for('admin_get.patient_list') }}"  method="GET">病患清單</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ url_for('admin_get.patient_list') }}"  method="GET">Patient list</a>
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ url_for('obs.obs_page') }}"  method="GET">Observation</a>
-                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ url_for('obs_get.search_page2') }}"  method="GET">檢驗清單</a>
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ url_for('obs_get.search_page2') }}"  method="GET">ECG</a>
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ url_for('org.organization_page') }}"  method="GET">Organization</a>
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ url_for('ser.service_page') }}"  method="GET">ServiceRequest</a>
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ url_for('pra.practitioner_page') }}"  method="GET">Practitioner</a>
@@ -50,10 +49,10 @@
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="#!">Action</a>
-                                    <a class="dropdown-item" href="#!">Another action</a>
+                                    <a class="dropdown-item" href="#!">登入</a>
+                                    <a class="dropdown-item" href="#!">註冊</a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#!">Something else here</a>
+                                    <a class="dropdown-item" href="#!">登出</a>
                                 </div>
                             </li>
                            

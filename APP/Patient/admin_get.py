@@ -4,45 +4,37 @@ import requests
 app = Flask(__name__)
 bp = Blueprint('admin_get', __name__)
 
-# 修改 fhir_server_api，使其包含 "/Patient/{id}"
-fhir_server_api = "http://hapi.fhir.tw/fhir/Patient/{}"
+fhir_server_api = "http://hapi.fhir.org/baseR4/Patient/{}"
 
+#list
 @bp.route('/patients', methods=['GET'])
 def patient_list():
     try:
         search_id = request.args.get('search_id', '')
         if search_id:
-            # 向 HAPI FHIR 伺服器發送 GET 請求，獲取指定病患資料
-            response = requests.get(fhir_server_api.format(search_id))
+            # 向 HAPI FHIR 伺服器發送 GET 請求，獲取指定病患資料的歷史紀錄
+            response = requests.get(fhir_server_api.format(search_id) + "/_history")
             response.raise_for_status()  # 檢查是否有錯誤發生
-            patient_data = response.json()
-
-            # 提取有用的病患資訊，例如 resource_id、name 和 gender
-            patients = [{
-                "resource_id": patient_data.get('id', ''),
-                "name": patient_data.get('name', [{}])[0].get('text', ''),
-                "gender": patient_data.get('gender', '')
-            }]
-        else:
-            # 向 HAPI FHIR 伺服器發送 GET 請求，獲取所有病患資料
-            response = requests.get("http://hapi.fhir.tw/fhir/Patient")
-            response.raise_for_status()  # 檢查是否有錯誤發生
-            data = response.json()
-
-            # 提取有用的病患資訊，例如 resource_id、name 和 gender
+            history_data = response.json()
+            
+            # 提取歷史紀錄中的所有版本資訊
             patients = []
-            for entry in data.get('entry', []):
+            for entry in history_data.get('entry', []):
                 resource = entry.get('resource', {})
                 patient_id = resource.get('id', '')
+                version_id = entry.get('versionId', '')
                 name = resource.get('name', [{}])[0].get('text', '')
                 gender = resource.get('gender', '')
-                patients.append({"resource_id": patient_id, "name": name, "gender": gender})
+                patients.append({"resource_id": patient_id, "version_id": version_id, "name": name, "gender": gender})
+        else:
+            # 如果沒有指定搜索 ID，則返回空列表
+            patients = []
 
         return render_template('Patient/admin_get.html', patients=patients, search_id=search_id)
 
     except requests.exceptions.RequestException as e:
         return str(e)
-    
+#delete    
 @bp.route('/patients/delete/<string:patient_id>', methods=['DELETE'])
 def delete_patient(patient_id):
     try:
@@ -62,7 +54,7 @@ def detail2(resource_id):
         response.raise_for_status()
         patient_data = response.json()
 
-        # 提取有用的患者資訊，例如姓名、性別等
+        # 提取資訊
         patient_detail = {
             "resource_id": patient_data.get('id', ''),
             "name": patient_data.get('name', [{}])[0].get('text', ''),
@@ -84,9 +76,6 @@ def detail2(resource_id):
 
     except requests.exceptions.RequestException as e:
         return str(e)
-    
-   
-
 
 if __name__ == '__main__':
     app.run(debug=True)

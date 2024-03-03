@@ -1,11 +1,11 @@
 from flask import Flask, request, render_template, Blueprint,jsonify
-from .. import config
+from APP import config
 import requests
 
 
 app = Flask(__name__)
 
-fhir_server = "https://hapi.fhir.tw/fhir/Patient/"
+fhir_server = "http://hapi.fhir.org/BaseR4/Patient/"
 
 bp = Blueprint('pat_put', __name__)
 
@@ -67,6 +67,7 @@ def sequelput_page():
             ],
            
         }
+
         headers = {'Content-Type': 'application/json',
                    "Accept": "application/json"}
         response = requests.put(fhir_server+resource_id , headers=headers, json=data)
