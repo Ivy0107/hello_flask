@@ -4,7 +4,7 @@ import requests
 
 app = Flask(__name__)
 
-FHIR_URL = "https://hapi.fhir.tw/fhir" # https://hapi.fhir.tw/fhir  http://hapi.fhir.org/baseR4  http://152.38.3.196:10021/fhir
+FHIR_URL = "http://hapi.fhir.org/baseR4" # https://hapi.fhir.tw/fhir  http://hapi.fhir.org/baseR4  http://152.38.3.196:10021/fhir
 
 headers = {
     "Content-Type": "application/fhir+json",
