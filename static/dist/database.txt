@@ -1,4 +1,4 @@
-自訂id
+#自訂id
 prefix = "Eden-pat"
 資料庫設定
 db_settings = {
@@ -61,4 +61,94 @@ initialize_counter()
     except Exception as db_error:
         return {"database_error": str(db_error)}
 
-    
+
+#註冊+登入    
+db_settings = {
+    'host': '127.0.0.1',
+    'port': 3306,
+    'user': 'root',
+    'password': '123456',
+    'db': 'test',
+    'cursorclass': pymysql.cursors.DictCursor
+}
+
+mysql = MySQL(app)
+#註冊
+@app.route('/register', methods=['POST', 'GET'])
+def register():
+    if request.method == 'POST':
+        if request.is_json:
+            data = request.get_json()
+            username = data.get('username')
+            password = data.get('password')
+            confirm_password = data.get('confirm_password')
+            role = data.get('role')
+
+            if not username or not password or not confirm_password or not role:
+                return jsonify({'message': 'Missing required fields'}), 400
+
+            if password != confirm_password:
+                return jsonify({'message': 'Passwords do not match'}), 400
+
+            conn = pymysql.connect(**db_settings)
+            cursor = conn.cursor()
+            cursor.execute("INSERT INTO users (username, password, role) VALUES (%s, %s, %s)", (username, password, role))
+            conn.commit()
+            cursor.close()
+            return render_template('Login/register.html')
+        
+        elif request.form:
+            username = request.form.get('username')
+            password = request.form.get('password')
+            confirm_password = request.form.get('confirm_password')
+            role = request.form.get('role')
+            
+            conn = pymysql.connect(**db_settings)
+            cursor = conn.cursor()
+            cursor.execute("INSERT INTO users (username, password, role) VALUES (%s, %s, %s)", (username, password, role))
+            conn.commit()
+            cursor.close()
+            return render_template('Login/register.html')
+        else:
+            return jsonify({'message': 'Unsupported Media Type'}), 415
+
+    return render_template('Login/register.html')
+#登入
+@app.route('/login', methods=['POST', 'GET'])
+def login():
+    if request.method == 'POST':
+        if request.is_json:
+            data = request.get_json()
+            username = data.get('username')
+            password = data.get('password')
+
+            conn = pymysql.connect(**db_settings)
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM users WHERE username = %s AND password = %s", (username, password))
+            user = cursor.fetchone()
+            cursor.close()
+
+            if not user:
+                return jsonify({'message': 'Invalid credentials'}), 401
+
+            return render_template('Login/login.html')
+        
+        elif request.form:
+            username = request.form.get('username')
+            password = request.form.get('password')
+
+            conn = pymysql.connect(**db_settings)
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM users WHERE username = %s AND password = %s", (username, password))
+            user = cursor.fetchone()
+            cursor.close()
+            
+            if not user:
+                return jsonify({'message': 'Invalid credentials'}), 401
+
+            return render_template('Login/login.html')
+
+        else:
+            return jsonify({'message': 'Unsupported Media Type'}), 415
+
+    return render_template('Login/login.html')    

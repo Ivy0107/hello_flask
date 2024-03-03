@@ -1,5 +1,4 @@
-from flask import Flask, request, render_template, Blueprint,jsonify
-from APP import config
+from flask import Flask, request,Blueprint,jsonify
 import requests
 
 

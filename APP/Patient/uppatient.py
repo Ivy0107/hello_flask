@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, Blueprint
 from APP.config import create_fhir_resource
-import requests
+
 
 app = Flask(__name__)
 

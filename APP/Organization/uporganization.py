@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template, Blueprint
-from .. import config
+from APP import config
 
 app = Flask(__name__)
 
