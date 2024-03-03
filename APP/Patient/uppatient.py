@@ -1,10 +1,11 @@
 from flask import Flask, request, render_template, Blueprint
+from APP.config import create_fhir_resource2
 import pymysql
 import requests
 
 app = Flask(__name__)
 
-fhir_server = "https://hapi.fhir.tw/fhir/Patient/"
+
 prefix = "Eden-pat"
 
 bp = Blueprint('pat_sc1', __name__)
@@ -99,38 +100,69 @@ def sequel_page():
     try:
         # 上傳 FHIR 伺服器
         data = {
-            "resourceType": "Patient",
-            "id": generated_id,
-            "identifier": [
-                {"use": "official", 
-                 "type": 
-                 {"coding": 
-                    [{"system": "http://terminology.hl7.org/CodeSystem/v2-0203", 
-                        "code": "MR"}]}, 
-                            "system": "http://www.tph.mohw.gov.tw/", 
-                            "value": identifier2},
-                            {"system": "http://www.tph.mohw.gov.tw/", 
-                            "value": identifier}
-            ],
-            "name": 
-                [{"use": "official", 
-                    "text": name}],
-            "gender": gender,
-            "birthDate": birthdate,
-            "telecom": [{
-                "system": "phone", 
-                "value": contact}],
-            "address": [{
-                "city": city, 
-                "district": District, 
-                "line": [line], "postalCode": postalCode, "country": country}],
-            "contact": [{"name": {"text": contactname, "use": "official"}}, {"telecom": [{"system": "phone", "value": contacttelecom}]}]
+  "resourceType": "Patient",
+  "id": generated_id,
+  "identifier": [
+    {
+      "use": "official",
+      "type": {
+        "coding": [
+          {
+            "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+            "code": "MR"
+          }
+        ]
+      },
+      "system": "http://www.tph.mohw.gov.tw/",
+      "value": identifier2
+    },
+    {
+      "system": "http://www.tph.mohw.gov.tw/",
+      "value": identifier
+    }
+  ],
+  "name": [
+    {
+      "use": "official",
+      "text": name
+    }
+  ],
+  "gender": gender,
+  "birthDate": birthdate,
+  "telecom": [
+    {
+      "system": "phone",
+      "value": contact
+    }
+  ],
+  "address": [
+    {
+      "city": city,
+      "district": District,
+      "line": [line],
+      "postalCode": postalCode,
+      "country": country
+    }
+  ],
+  "contact": [
+    {
+      "name": {
+        "text": contactname,
+        "use": "official"
+      }
+    },
+    {
+      "telecom": [
+        {
+          "system": "phone",
+          "value": contacttelecom
         }
+      ]
+    }
+  ]
+}
 
-        headers = {'Content-Type': 'application/json', "Accept": "application/json" }
-        response = requests.put(fhir_server + generated_id, headers=headers, json=data)
-        response_text = response.text
-        print(response_text)
+        response= create_fhir_resource2("Patient",generated_id, data)
         response.raise_for_status()
 
     except requests.exceptions.RequestException as fhir_error:
