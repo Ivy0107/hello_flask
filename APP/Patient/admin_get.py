@@ -22,7 +22,8 @@ def patient_list():
             for entry in history_data.get('entry', []):
                 resource = entry.get('resource', {})
                 patient_id = resource.get('id', '')
-                version_id = entry.get('versionId', '')
+                version_id = resource.get('meta', {}).get('versionId', '')
+                print(f"Version ID: {version_id}")  # 打印 version_id
                 name = resource.get('name', [{}])[0].get('text', '')
                 gender = resource.get('gender', '')
                 patients.append({"resource_id": patient_id, "version_id": version_id, "name": name, "gender": gender})

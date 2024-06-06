@@ -13,6 +13,7 @@ def patient_page():
 @bp.route('/sequel', methods=['POST'])
 def sequel_page():
     try:
+        #抓表單輸入的資料
         identifier2 = request.form.get('identifier2')
         identifier =  request.form.get('identifier')
         contact=  request.form.get('contact')
@@ -29,9 +30,13 @@ def sequel_page():
         managingOrganization = request.form.get('managingOrganization')
 
 
-        # 上傳 FHIR 伺服器
+        # 轉換格式
         data = {
             "resourceType": "Patient",
+            # "meta": {
+            #     profile: [
+            #             "http://hl7.org/fhir/StructureDefinition/Patient"]
+            #    }
             "identifier": [
                 {
                     "use": "official",
@@ -92,6 +97,7 @@ def sequel_page():
             ]
         }
 
+        #上傳FHIR伺服器
         response = create_fhir_resource("Patient", data)
         server_response_text = response.text
 

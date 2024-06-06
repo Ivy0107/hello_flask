@@ -1,6 +1,7 @@
 from flask import Flask, request,Blueprint,jsonify
+import json
 import requests
-
+ 
 
 app = Flask(__name__)
 
@@ -66,22 +67,23 @@ def sequelput_page():
             ],
            
         }
+        print(data)
 
-        headers = {'Content-Type': 'application/json',
+        headers = {'Content-Type': 'application/fhir+json',
                    "Accept": "application/json"}
-        response = requests.put(fhir_server+resource_id , headers=headers, json=data)
-    
-        response.raise_for_status()  # 如果伺服器回應不是 2xx，則引發異常
-        if response.status_code == 200:
-            # 上傳成功，返回成功的訊息，這裡使用 JSON 格式
-            return jsonify({"success": True, "message": "Data saved successfully"})
-        else:
-            # 上傳失敗，返回錯誤訊息
-            return jsonify({"success": False, "message": "Failed to save data"})
+        response = requests.put(fhir_server+resource_id , headers=headers, data=json.dumps(data))
+        print(fhir_server+resource_id)
 
+        if response.status_code == 200:
+            return jsonify({"success": True, "message": "更新成功", "data": response.json()})
+        elif response.status_code == 404:
+            return jsonify({"success": False, "message": "資源未找到"})
+        else:
+            return jsonify({"success": False, "message": f"請求失敗，狀態碼: {response.status_code}"})
     except requests.exceptions.RequestException as fhir_error:
-        # 如果發生錯誤，返回錯誤訊息
+        # 返回錯誤訊息
         return jsonify({"success": False, "message": str(fhir_error)})
+
 
 if __name__ == '__main__':
     app.run(debug=True, threaded=True)
