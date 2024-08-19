@@ -354,9 +354,7 @@ def sequelobs_page():
         
 
         response1 = config.create_fhir_resource("Observation", observation_data)
-
         server_response_text1 = response1.text
-
         return render_template('Results/sequel.html',  server_response_text=server_response_text1)
 
     except Exception as e:

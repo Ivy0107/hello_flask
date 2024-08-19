@@ -3,20 +3,26 @@ from .. import config
 
 app = Flask(__name__)
 
+# 定義Blueprint
 bp = Blueprint('ser', __name__)
 
+# 定義route
 @bp.route('/service', methods=['GET', 'POST'])
 def service_page():
     
     return render_template('serviceRequest/upserviceRequest.html')
 
+# 定義route
 @bp.route('/sequelser', methods=['POST'])
+
 def sequelser_page():
     try:
+        #抓表單輸入的資料
         authoredon = request.form.get('authoredon')
         patientid = request.form.get('patientid')
         requester = request.form.get('requester')
-
+        
+        # 轉換格式
         servicerequest_data = {
             "resourceType": "ServiceRequest",
             "identifier": [
@@ -48,11 +54,9 @@ def sequelser_page():
            }
       
 }
-
+        # 發送請求到 FHIR server
         response = config.create_fhir_resource("ServiceRequest", servicerequest_data)
-
         server_response_text = response.text
-
         return render_template('Results/sequel.html',  server_response_text=server_response_text)
 
     except Exception as e:

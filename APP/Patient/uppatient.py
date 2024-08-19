@@ -4,12 +4,15 @@ from APP.config import create_fhir_resource
 
 app = Flask(__name__)
 
+# 定義Blueprint
 bp = Blueprint('pat_sc1', __name__)
 
+# 定義route
 @bp.route('/patient', methods=['GET', 'POST'])
 def patient_page():
     return render_template('Patient/patient.html')
 
+# 定義route
 @bp.route('/sequel', methods=['POST'])
 def sequel_page():
     try:
@@ -97,10 +100,9 @@ def sequel_page():
             ]
         }
 
-        #上傳FHIR伺服器
+        # 發送請求到 FHIR server
         response = create_fhir_resource("Patient", data)
         server_response_text = response.text
-
         return render_template('Results/sequel.html',  server_response_text=server_response_text)
 
     except Exception as e:

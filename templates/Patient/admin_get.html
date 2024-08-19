@@ -36,8 +36,9 @@
             <div class="table-responsive">
                 <table class="table table-hover">
                     <thead>
+                        <!--欄位名稱-->
                         <tr>
-                            <th>版本 ID</th> <!-- 新增版本 ID 標題 -->
+                            <th>版本 ID</th> 
                             <th>ID</th>
                             <th>姓名</th>
                             <th>性別</th>
@@ -48,7 +49,7 @@
                         {% if patients %}
                             {% for patient in patients %}
                                 <tr>
-                                    <td>{{ patient["version_id"] }}</td> <!-- 顯示版本 ID -->
+                                    <td>{{ patient["version_id"] }}</td> 
                                     <td>{{ patient["resource_id"] }}</td>
                                     <td>{{ patient["name"] }}</td>
                                     <td>{{ patient["gender"] }}</td>

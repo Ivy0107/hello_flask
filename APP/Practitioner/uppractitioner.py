@@ -3,19 +3,24 @@ from .. import config
 
 app = Flask(__name__)
 
+# 定義Blueprint
 bp = Blueprint('pra', __name__)
 
+# 定義route
 @bp.route('/practitioner', methods=['GET', 'POST'])
 def practitioner_page():
     
     return render_template('Practitioner/uppractitioner.html')
 
+# 定義route
 @bp.route('/sequelpra', methods=['POST'])
 def sequelpra_page():
     try:
+        #抓表單輸入的資料
         name1 = request.form.get('name1')
         identifier3 = request.form.get('identifier3')
 
+        # 轉換格式
         practitioner_data = {
            "resourceType": "Practitioner",
             "identifier" : [
@@ -41,11 +46,10 @@ def sequelpra_page():
                          }]
    
                              }
-
+        
+        # 發送請求到 FHIR server
         response = config.create_fhir_resource("Practitioner", practitioner_data)
-
         server_response_text = response.text
-
         return render_template('Results/sequel.html',  server_response_text=server_response_text)
 
     except Exception as e:
